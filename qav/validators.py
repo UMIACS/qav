@@ -46,8 +46,6 @@ class Validator(object):
 
     @staticmethod
     def stringify(value):
-        if LDAPNode in type(value).__bases__:
-            return value.dnattr()
         return str(value)
 
 
@@ -245,6 +243,7 @@ class ListValidator(Validator):
         except:
             self.error_message = '%s is not a valid choice.' % value
             return False
+
 
 class TupleValidator(Validator):
 

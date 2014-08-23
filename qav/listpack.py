@@ -3,8 +3,8 @@ import string
 
 
 class ListPack(object):
-    BOLD='\033[1m'
-    OFF='\033[0m'
+    BOLD = '\033[1m'
+    OFF = '\033[0m'
 
     def __init__(self, lp):
         self.sep = ": "
@@ -18,7 +18,8 @@ class ListPack(object):
 
     def bold(self, t):
         s1, s2 = t
-        return '%s%s%s%s%s%s' % (self.BOLD, str(s1), self.OFF, self.sep, str(s2), self.buf)
+        return '%s%s%s%s%s%s' % (self.BOLD, str(s1), self.OFF, self.sep,
+                                 str(s2), self.buf)
 
     def append_item(self, item):
         self._lp.append(item)
@@ -55,8 +56,8 @@ def id_generator(size=6, chars=None):
 def lp_generator(size=20):
     lp = []
     for i in range(size):
-        lp.append((id_generator(size=random.randint(4,15)),
-                  id_generator(size=random.randint(6,60))))
+        lp.append((id_generator(size=random.randint(4, 15)),
+                  id_generator(size=random.randint(6, 60))))
     return lp
 
 
@@ -67,7 +68,7 @@ if __name__ == "__main__":
                    ('netmask', '255.255.255.0'),
                    ('gateway', '128.8.120.1'),
                    ('macaddress', 'aa:bb:cc:dd:ee:ff'),
-                   ('cr',None)])
+                   ('cr', None)])
     print lp
     for x in range(10):
         print ListPack(lp_generator())
