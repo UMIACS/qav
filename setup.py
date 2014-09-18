@@ -1,5 +1,12 @@
 from distutils.core import setup
 
+long_description = \
+'''
+A python library for console-based raw input-based questions with answers and
+extensive and extensible validation for answers.
+'''
+
+
 setup(
     name='qav',
     version='0.1.0',
@@ -9,5 +16,5 @@ setup(
     url='',
     license='LICENSE.txt',
     description='Question Answer Validation',
-    long_description=open('README.md').read(),
+    long_description=long_description,
 )
