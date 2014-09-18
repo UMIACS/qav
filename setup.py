@@ -1,4 +1,11 @@
-from distutils.core import setup
+#!/usr/bin/env python
+
+try:
+    from setuptools import setup
+    extra = dict(test_suite="tests.test.suite", include_package_data=True)
+except ImportError:
+    from distutils.core import setup
+    extra = {}
 
 setup(
     name='qav',
@@ -10,4 +17,5 @@ setup(
     license='LICENSE.txt',
     description='Question Answer Validation',
     long_description=open('README.md').read(),
+    **extra
 )
