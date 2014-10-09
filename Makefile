@@ -12,4 +12,4 @@ ifeq ($(rhel),5)
 endif
 
 RPM:
-	$(PYTHON) setup.py bdist_rpm --requires=$(PYTHON)-netaddr
+	$(PYTHON) setup.py bdist_rpm --python=$(PYTHON) --requires=$(PYTHON)-netaddr
