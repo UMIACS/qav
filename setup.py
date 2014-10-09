@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 
-try:
-    from setuptools import setup
-    extra = dict(test_suite="tests.test.suite", include_package_data=True)
-except ImportError:
-    from distutils.core import setup
-    extra = {}
+from distutils.core import setup
+extra = {}
 
 long_description = \
 '''
@@ -13,10 +9,11 @@ A python library for console-based raw input-based questions with answers and
 extensive and extensible validation for answers.
 '''
 
+from qav import __version__
 
 setup(
     name='qav',
-    version='0.1.0',
+    version=__version__,
     author='Derek Yarnell',
     author_email='derek@umiacs.umd.edu',
     packages=['qav'],
