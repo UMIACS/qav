@@ -1,9 +1,6 @@
 
-RPM: PYTHON = python
 rhel = $(shell lsb_release -rs | cut -f1 -d.)
 
-
-RPM:
 ifeq ($(rhel),7)
 	PYTHON=python
 endif
@@ -13,4 +10,6 @@ endif
 ifeq ($(rhel),5)
 	PYTHON=python26
 endif
+
+RPM:
 	$(PYTHON) setup.py bdist_rpm --requires=$(PYTHON)-netaddr
