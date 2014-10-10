@@ -3,7 +3,7 @@ PACKAGE = qav
 VERSION = $(shell git describe --abbrev=0 --tags)
 RELEASE = 1
 OS_MAJOR_VERSION = $(shell lsb_release -rs | cut -f1 -d.)
-OS = rhel$(OS_MAJOR_VERSION)
+OS := rhel$(OS_MAJOR_VERSION)
 
 ifeq ($(OS),rhel7)
 	PYTHON=python
@@ -18,9 +18,9 @@ ifeq ($(OS),rhel5)
 	YUMREPO_LOCATION=/fs/UMyumrepos/rhel5/stable/noarch
 endif
 
-REQUIRES=$(PYTHON)-netaddr
+REQUIRES := $(PYTHON)-netaddr
 ifeq ($(OS),rhel5)
-	REQUIRES=$(REQUIRES),python26-ordereddict
+	REQUIRES := $(REQUIRES),python26-ordereddict
 endif
 
 rpm:
