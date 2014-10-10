@@ -11,7 +11,7 @@ ifeq ($(OS),rhel7)
 endif
 ifeq ($(OS),rhel6)
 	PYTHON=python
-	YUMREPO_LOCATION=/fs/UMyumrepos/rhel7/stable/Packages/noarch
+	YUMREPO_LOCATION=/fs/UMyumrepos/rhel6/stable/Packages/noarch
 endif
 ifeq ($(OS),rhel5)
 	PYTHON=python26
