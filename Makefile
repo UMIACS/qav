@@ -18,7 +18,7 @@ ifeq ($(OS),rhel5)
 	YUMREPO_LOCATION=/fs/UMyumrepos/rhel5/stable/noarch
 endif
 
-REQUIRES := $(PYTHON)-netaddr
+REQUIRES := $(PYTHON),$(PYTHON)-netaddr
 ifeq ($(OS),rhel5)
 	REQUIRES := $(REQUIRES),python26-ordereddict
 endif
