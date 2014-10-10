@@ -9,7 +9,8 @@ ifeq ($(rhel),6)
 endif
 ifeq ($(rhel),5)
 	PYTHON=python26
+	EXTRA_REQUIRES=,python26-ordereddict
 endif
 
 RPM:
-	$(PYTHON) setup.py bdist_rpm --python=$(PYTHON) --requires=$(PYTHON)-netaddr
+	$(PYTHON) setup.py bdist_rpm --python=$(PYTHON) --requires=$(PYTHON)-netaddr$(EXTRA_REQUIRES)
