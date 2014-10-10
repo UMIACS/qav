@@ -2,8 +2,8 @@
 PACKAGE = qav
 VERSION = $(shell git describe --abbrev=0 --tags)
 RELEASE = 1
-major_version = $(shell lsb_release -rs | cut -f1 -d.)
-OS = rhel$(major_version)
+OS_MAJOR_VERSION = $(shell lsb_release -rs | cut -f1 -d.)
+OS = rhel$(OS_MAJOR_VERSION)
 
 ifeq ($(OS),rhel7)
 	PYTHON=python
@@ -15,17 +15,23 @@ ifeq ($(OS),rhel6)
 endif
 ifeq ($(OS),rhel5)
 	PYTHON=python26
-	EXTRA_REQUIRES=$(EXTRA_REQUIRES),python26-ordereddict
 	YUMREPO_LOCATION=/fs/UMyumrepos/rhel5/stable/noarch
 endif
 
-RPM:
-	$(PYTHON) setup.py bdist_rpm --python=$(PYTHON) --requires=$(PYTHON)-netaddr$(EXTRA_REQUIRES)
+REQUIRES=$(PYTHON)-netaddr
+ifeq ($(OS),rhel5)
+	REQUIRES=$(REQUIRES),python26-ordereddict
+endif
 
-PACKAGE:
+rpm:
+	$(PYTHON) setup.py bdist_rpm \
+		--python=$(PYTHON) \
+		--requires=$(REQUIRES)
+
+package:
 	@echo ================================================================
 	@echo cp /fs/UMbuild/$(PACKAGE)/dist/$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm $(YUMREPO_LOCATION)
 	@echo createrepo /fs/UMyumrepos/$(OS)/stable
 
-build: RPM PACKAGE
+build: rpm package
 
