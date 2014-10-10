@@ -1,6 +1,6 @@
 
 PACKAGE = qav
-VERSION = $(shell git describe --tags)
+VERSION = $(shell git describe --abbrev=0 --tags)
 RELEASE = 1
 major_version = $(shell lsb_release -rs | cut -f1 -d.)
 OS = rhel$(major_version)
