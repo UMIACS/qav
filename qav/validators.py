@@ -24,7 +24,7 @@ class Validator(object):
     def validate(self, value):
         '''The most basic validation'''
         if not self.blank and value == '':
-            self.error_message = 'Please provide a value, can not be empty.'
+            self.error_message = 'Can not be empty.  Please provide a value.'
             return False
         self._choice = value
         return True
@@ -233,7 +233,7 @@ class ListValidator(Validator):
             return False
 
     def validate(self, value):
-        """Return a boolean if the choice a number in the enumeration"""
+        """Return a boolean if the choice is a number in the enumeration"""
         if value in self.choices:
             self._choice = value
             return True
@@ -291,8 +291,9 @@ class TupleValidator(Validator):
 
 
 class HashValidator(Validator):
-    def __init__(self, choices, filters=None):
+    def __init__(self, choices, filters=None, verbose=True):
         self._choices = OrderedDict()
+        self.verbose = verbose
         for x in choices:
             self._choices[x] = choices[x]
         if filters is None:
@@ -306,7 +307,7 @@ class HashValidator(Validator):
         _choices = copy(self._choices)
         for c in self._choices:
             for f in self.filters:
-                if f.filter(c, self.answers):
+                if f.filter(_choices[c], self.answers):
                     del _choices[c]
                     break
         return _choices
@@ -315,13 +316,16 @@ class HashValidator(Validator):
         if len(self.choices) > 0:
             print "Please select from the following choices:"
             for x, y in enumerate(self.choices):
-                print " [%d] - %s (%s)" % (x, y, self.choices[y])
+                if self.verbose:
+                    print " [%d] - %s (%s)" % (x, y, self.choices[y])
+                else:
+                    print " [%d] - %s" % (x, y)
             return True
         else:
             return False
 
     def validate(self, value):
-        """Return a boolean if the choice a number in the enumeration"""
+        """Return a boolean if the choice is a number in the enumeration"""
         if value in self.choices.keys():
             self._choice = value
             return True
