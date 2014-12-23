@@ -1,6 +1,6 @@
 from qav.validators import Validator, CompactListValidator
 from qav.listpack import ListPack
-
+from qav.utils import bold
 
 class QuestionSet(object):
     def __init__(self):
@@ -95,9 +95,7 @@ class Question(object):
             self.validator.answers = answers
         while(True):
             q = self.question % answers
-            if self.multiple:
-                print('Multiple answers supported please enter a . to' +
-                      'finalize.')
+
             if not self.choices():
                 return None
             if self.value in answers:
@@ -132,6 +130,8 @@ class Question(object):
             answers = {}
         _answers = {}
         if self.multiple:
+            print(bold('Multiple answers supported please enter a . to ' +
+                  'finish.'))
             _answers[self.value] = []
             answer = self._ask(answers)
             while answer is not None:
