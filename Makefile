@@ -23,17 +23,18 @@ ifeq ($(OS),rhel5)
 	REQUIRES := $(REQUIRES),python26-ordereddict
 endif
 
-.PHONY: rpm package build
-
+.PHONY: rpm
 rpm:
 	$(PYTHON) setup.py bdist_rpm \
 		--python=$(PYTHON) \
 		--requires=$(REQUIRES)
 
+.PHONY: package
 package:
 	@echo ================================================================
 	@echo cp /fs/UMbuild/$(PACKAGE)/dist/$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm $(YUMREPO_LOCATION)
 	@echo createrepo /fs/UMyumrepos/$(OS)/stable
 
+.PHONY: build
 build: rpm package
 
