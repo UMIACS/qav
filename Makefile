@@ -23,6 +23,8 @@ ifeq ($(OS),rhel5)
 	REQUIRES := $(REQUIRES),python26-ordereddict
 endif
 
+.PHONY: rpm package build
+
 rpm:
 	$(PYTHON) setup.py bdist_rpm \
 		--python=$(PYTHON) \
