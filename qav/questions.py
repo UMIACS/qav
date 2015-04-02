@@ -1,6 +1,6 @@
 from qav.validators import Validator, CompactListValidator
 from qav.listpack import ListPack
-
+from qav.utils import bold
 
 class QuestionSet(object):
     def __init__(self):
@@ -49,9 +49,18 @@ class QuestionSet(object):
 
 
 class Question(object):
-    def __init__(self, question, value, validator=None, printable_name=None):
+    def __init__(self, question, value, validator=None, multiple=False,
+                 printable_name=None):
+        """ Basic Question class.
+
+            Supports simple question and answer or question and multiple
+            answers (note: list/hash validators have caveats).  Also
+            support for one or more Validator classes to ensure the answer
+            given meets the question criteria.
+        """
         self.question = question
         self.value = value
+        self.multiple = multiple
         if printable_name:
             self.printable_name = printable_name
         else:
@@ -86,6 +95,7 @@ class Question(object):
             self.validator.answers = answers
         while(True):
             q = self.question % answers
+
             if not self.choices():
                 return None
             if self.value in answers:
@@ -95,6 +105,11 @@ class Question(object):
                     answer = answers[self.value]
             else:
                 answer = raw_input("%s: " % q)
+            # if we are in multiple mode and the answer is just the empty
+            # string (enter/return pressed) then we will just answer None
+            # to indicate we are done
+            if answer == '.' and self.multiple:
+                return None
             if self.validate(answer):
                 return self.answer()
             else:
@@ -114,7 +129,16 @@ class Question(object):
         if answers is None:
             answers = {}
         _answers = {}
-        _answers[self.value] = self._ask(answers)
+        if self.multiple:
+            print(bold('Multiple answers supported please enter a . to ' +
+                  'finish.'))
+            _answers[self.value] = []
+            answer = self._ask(answers)
+            while answer is not None:
+                _answers[self.value].append(answer)
+                answer = self._ask(answers)
+        else:
+            _answers[self.value] = self._ask(answers)
         if type(self.validator) is list:
             for v in self.validator:
                 _answers = dict(_answers, **v.hints())
