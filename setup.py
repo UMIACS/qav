@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
-extra = {}
+try:
+    from setuptools import setup
+    extra = dict(test_suite="tests.test.suite", include_package_data=True)
+except ImportError:
+    from distutils.core import setup
+    extra = {}
 
 long_description = \
 '''
