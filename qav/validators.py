@@ -194,7 +194,7 @@ class EmailValidator(Validator):
     def validate(self, value):
         if self.blank and value == '':
             return True
-        if '@' in value and len(value) > 3:
+        if re.match(r'[^@]+@[^@]+\.[^@]+', value) and len(value) > 3:
             self._choice = value
             return True
         else:
