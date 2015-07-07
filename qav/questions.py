@@ -126,15 +126,15 @@ class Question(object):
     def ask(self, answers=None):
         """ Ask the question, then ask any sub-questions.
 
-            This returns a dict with the value: answer pairs for
-            the current question plus all decendent questions.
+            This returns a dict with the {value: answer} pairs for the current
+            question plus all decendent questions.
         """
         if answers is None:
             answers = {}
         _answers = {}
         if self.multiple:
-            print(bold('Multiple answers supported please enter a . to ' +
-                       'finish.'))
+            print(bold('Multiple answers are supported for this question.  ' +
+                       'Please enter a "."  character to finish.'))
             _answers[self.value] = []
             answer = self._ask(answers)
             while answer is not None:
@@ -153,11 +153,11 @@ class Question(object):
         return _answers
 
     def validate(self, answer):
-        """ Validate the answers with our Validator(s)
+        """ Validate the answer with our Validator(s)
 
-            This will support a single or multiple validator classes
-            to be applied to this question.  If there are multiple
-            all validators must return True to be valid.
+            This will support one or more validator classes being applied to
+            this question.  If there are multiple, all validators must return
+            True for the answer to be valid.
         """
         if answer is None:
             return False
@@ -173,10 +173,9 @@ class Question(object):
     def answer(self):
         """ Return the answer for the question from the validator.
 
-            This will ultimately only be called on the first
-            validator if multiple validators have been added.
-            Since we ultimately we and all the validators this
-            should not cause any issues.
+            This will ultimately only be called on the first validator if
+            multiple validators have been added.  Since we ultimately we and
+            all the validators this should not cause any issues.
         """
         if isinstance(self.validator, list):
             return self.validator[0].choice()
@@ -185,9 +184,8 @@ class Question(object):
     def choices(self):
         """ Print the choices for this question.
 
-            This may be a empty string and in the case of a list
-            of validators we will only show the first validators
-            choices.
+            This may be a empty string and in the case of a list of validators
+            we will only show the first validator's choices.
         """
         if isinstance(self.validator, list):
             return self.validator[0].print_choices()
