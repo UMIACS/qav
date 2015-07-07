@@ -6,7 +6,7 @@ provided in previous questions.
 It provides question sets to group related questions.  QuestionSets can also
 have subordinate QuestionSets that are called depth-first.
 
-```python
+```
 >>> from qav.questions import Question
 >>> from qav.validators import ListValidator
 >>> q = Question('How old am I? ', 'age', ListValidator(['20', '35', '40']))
