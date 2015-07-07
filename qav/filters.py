@@ -7,9 +7,8 @@ class Filter(object):
 class DynamicFilter(Filter):
 
     '''
-    A Filter that can dynamically answer if the choice should be filtered
-    based off of whether filterable_func(choice[, table]) returns True or
-    False.
+    A Filter that can dynamically prune choices based off of whether
+    filterable_func(choice[, table]) returns True or False.
     '''
 
     def __init__(self, filterable_func):
@@ -17,7 +16,7 @@ class DynamicFilter(Filter):
 
     def filter(self, value, table=None):
         '''
-        Return True if the value should be pruned, False otherwise.
+        Return True if the value should be pruned; False otherwise.
 
         If a `table` argument was provided, pass it to filterable_func.
         '''

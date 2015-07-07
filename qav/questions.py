@@ -2,7 +2,9 @@ from qav.validators import Validator, CompactListValidator
 from qav.listpack import ListPack
 from qav.utils import bold
 
+
 class QuestionSet(object):
+
     def __init__(self):
         self.answers = {}
         self.questions = []
@@ -28,7 +30,7 @@ class QuestionSet(object):
         while True:
             answers = self.ask()
             lp = ListPack(map(lambda q: (q.printable_name, answers[q.value]),
-                          self.questions))
+                              self.questions))
 
             # add in items that were not asked as questions but should be
             # displayed alongside that information
@@ -49,6 +51,7 @@ class QuestionSet(object):
 
 
 class Question(object):
+
     def __init__(self, question, value, validator=None, multiple=False,
                  printable_name=None):
         """ Basic Question class.
@@ -88,7 +91,7 @@ class Question(object):
             appropriate.  Finally call the validate function to check all
             validators for this question and returning the answer.
         """
-        if type(self.validator) is list:
+        if isinstance(self.validator, list):
             for v in self.validator:
                 v.answers = answers
         else:
@@ -113,7 +116,7 @@ class Question(object):
             if self.validate(answer):
                 return self.answer()
             else:
-                if type(self.validator) is list:
+                if isinstance(self.validator, list):
                     for v in self.validator:
                         if v.error() != '':
                             print v.error()
@@ -131,7 +134,7 @@ class Question(object):
         _answers = {}
         if self.multiple:
             print(bold('Multiple answers supported please enter a . to ' +
-                  'finish.'))
+                       'finish.'))
             _answers[self.value] = []
             answer = self._ask(answers)
             while answer is not None:
@@ -139,7 +142,7 @@ class Question(object):
                 answer = self._ask(answers)
         else:
             _answers[self.value] = self._ask(answers)
-        if type(self.validator) is list:
+        if isinstance(self.validator, list):
             for v in self.validator:
                 _answers = dict(_answers, **v.hints())
         else:
@@ -159,7 +162,7 @@ class Question(object):
         if answer is None:
             return False
         else:
-            if type(self.validator) is list:
+            if isinstance(self.validator, list):
                 for v in self.validator:
                     if not v.validate(answer):
                         return False
@@ -175,7 +178,7 @@ class Question(object):
             Since we ultimately we and all the validators this
             should not cause any issues.
         """
-        if type(self.validator) is list:
+        if isinstance(self.validator, list):
             return self.validator[0].choice()
         return self.validator.choice()
 
@@ -186,18 +189,18 @@ class Question(object):
             of validators we will only show the first validators
             choices.
         """
-        if type(self.validator) is list:
+        if isinstance(self.validator, list):
             return self.validator[0].print_choices()
         return self.validator.print_choices()
 
     def add(self, question):
-        if type(question) is Question:
+        if isinstance(question, Question):
             self._questions.append(question)
         else:
             raise Exception
 
     def remove(self, question):
-        if type(question) is Question:
+        if isinstance(question, Question):
             self._questions.remove(question)
         else:
             raise Exception

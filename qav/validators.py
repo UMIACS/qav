@@ -127,8 +127,8 @@ class DomainNameValidator(Validator):
 
 
 class MacAddressValidator(Validator):
-     
-    macaddr_regex = re.compile(r'^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$') 
+
+    macaddr_regex = re.compile(r'^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$')
 
     def validate(self, value):
         if MacAddressValidator.macaddr_regex.match(value.lower()):
@@ -194,7 +194,7 @@ class URIValidator(Validator):
 class EmailValidator(Validator):
 
     email_regex = re.compile(r'[^@]+@[^@]+\.[^@]+')
-    
+
     def validate(self, value):
         if self.blank and value == '':
             return True
@@ -295,6 +295,7 @@ class TupleValidator(Validator):
 
 
 class HashValidator(Validator):
+
     def __init__(self, choices, filters=None, verbose=True):
         self._choices = OrderedDict()
         self.verbose = verbose

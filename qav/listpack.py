@@ -60,7 +60,7 @@ def lp_generator(size=20):
     lp = []
     for i in range(size):
         lp.append((id_generator(size=random.randint(4, 15)),
-                  id_generator(size=random.randint(6, 60))))
+                   id_generator(size=random.randint(6, 60))))
     return lp
 
 
