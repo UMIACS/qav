@@ -1,6 +1,3 @@
-import random
-import string
-
 
 class ListPack(object):
     BOLD = '\033[1m'
@@ -47,32 +44,3 @@ class ListPack(object):
                 line_length += self.calc(i)
         _str = _str + '\n' + line
         return _str
-
-
-def id_generator(size=6, chars=None):
-    if chars is None:
-        chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
-    letter = random.choice(string.ascii_lowercase)
-    return letter + ''.join(random.choice(chars) for x in range(size))
-
-
-def lp_generator(size=20):
-    lp = []
-    for i in range(size):
-        lp.append((id_generator(size=random.randint(4, 15)),
-                   id_generator(size=random.randint(6, 60))))
-    return lp
-
-
-if __name__ == "__main__":
-    lp = ListPack([('hostname', 'novelty.umiacs.umd.edu'),
-                   ('architecture', 'x86_64'),
-                   ('ipaddress', '128.8.120.234'),
-                   ('netmask', '255.255.255.0'),
-                   ('gateway', '128.8.120.1'),
-                   ('macaddress', 'aa:bb:cc:dd:ee:ff'),
-                   ('cr', None)])
-    print lp
-    for x in range(10):
-        print ListPack(lp_generator())
-        print "--------------------------------------------------"
