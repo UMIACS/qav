@@ -3,8 +3,8 @@ qav is a Python library for console-based question and answering, with the
 ability to validate input.  Answers can be validated based on the information
 provided in previous questions.
 
-It provides question sets to group related questions.  QuestionSets can also
-have subordinate QuestionSets that are called depth-first.
+It provides question sets to group related questions.  Questions can also
+have subordinate Questions underneath them.
 
 ```
 >>> from qav.questions import Question
