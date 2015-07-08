@@ -1,11 +1,15 @@
 # Question Answer Validation
+
 qav is a Python library for console-based question and answering, with the
-ability to validate input.  Answers can be validated based on the information
-provided in previous questions.
+ability to validate input.
 
 It provides question sets to group related questions.  Questions can also
-have subordinate Questions underneath them.
+have subordinate Questions underneath them.  Answers to those questions can be
+validated based on a simple, static piece of information provided by you.
+Answers mail also be validated dynamically based on the information provided in
+previous questions.
 
+## Example Usage
 ```
 >>> from qav.questions import Question
 >>> from qav.validators import ListValidator

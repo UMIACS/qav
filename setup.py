@@ -9,8 +9,8 @@ except ImportError:
 
 long_description = \
 '''
-A python library for console-based raw input-based questions with answers and
-extensive and extensible validation for answers.
+qav is a Python library for console-based question and answering, with the
+ability to validate input.
 '''
 
 from qav import __version__
