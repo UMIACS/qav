@@ -27,7 +27,7 @@ How old am I? : 0
 ## Installation
 
 ### Requirements
-There aren't any!
+`netaddr`
 
 ### Installation
 ```
