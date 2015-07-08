@@ -23,3 +23,13 @@ How old am I? : 0
 >>> q.answer()
 # returns => {'age': '20'}
 ```
+
+## Installation
+
+### Requirements
+There aren't any!
+
+### Installation
+```
+$ pip install qav
+```
