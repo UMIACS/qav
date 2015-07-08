@@ -21,6 +21,9 @@ setup(
     author='Derek Yarnell',
     author_email='derek@umiacs.umd.edu',
     packages=['qav'],
+    install_requires=[
+        'netaddr',
+    ],
     url='https://github.com/UMIACS/qav',
     license='MIT',
     description='Question Answer Validation',
