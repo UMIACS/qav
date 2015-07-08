@@ -22,7 +22,7 @@ setup(
     author_email='derek@umiacs.umd.edu',
     packages=['qav'],
     url='https://gitlab.umiacs.umd.edu/staff/qav',
-    license='LICENSE.txt',
+    license='MIT',
     description='Question Answer Validation',
     long_description=long_description,
     **extra
