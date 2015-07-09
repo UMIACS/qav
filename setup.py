@@ -25,8 +25,5 @@ setup(
     license='MIT',
     description='Question Answer Validation',
     long_description=long_description,
-    install_requires=[
-        'netaddr',
-    ],
     **extra
 )
