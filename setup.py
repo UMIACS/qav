@@ -25,7 +25,7 @@ setup(
         'netaddr',
     ],
     url='https://github.com/UMIACS/qav',
-    license='MIT',
+    license='LGPL v2.1',
     description='Question Answer Validation',
     long_description=long_description,
     **extra

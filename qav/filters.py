@@ -1,3 +1,7 @@
+# qav (Question Answer Validation)
+# Copyright (C) 2015 UMIACS
+
+
 class Filter(object):
 
     def __init__(self, string):

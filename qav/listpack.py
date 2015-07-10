@@ -1,3 +1,6 @@
+# qav (Question Answer Validation)
+# Copyright (C) 2015 UMIACS
+
 
 class ListPack(object):
     BOLD = '\033[1m'

@@ -1,3 +1,7 @@
+# qav (Question Answer Validation)
+# Copyright (C) 2015 UMIACS
+
+
 import re
 import socket
 import datetime

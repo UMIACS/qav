@@ -1,3 +1,7 @@
+# qav (Question Answer Validation)
+# Copyright (C) 2015 UMIACS
+
+
 from qav.validators import Validator, CompactListValidator
 from qav.listpack import ListPack
 from qav.utils import bold
