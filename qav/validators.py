@@ -175,7 +175,7 @@ class URIValidator(Validator):
 
     # taken from Django URL validator
     uri_regex = re.compile(
-        r'^(?:http|ftp)s?://'  # http:// or https://
+        r'^\w+:(?://)?'  # uri scheme
         # domain...
         r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
         r'localhost|'  # localhost...
