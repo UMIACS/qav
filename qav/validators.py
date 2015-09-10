@@ -344,3 +344,22 @@ class HashValidator(Validator):
         except:
             self.error_message = '%s is not a valid choice.' % value
             return False
+
+
+class IntegerValidator(Validator):
+
+    def validate(self, value):
+        """
+        Return True if the choice is an integer; False otherwise.
+        
+        If the value was cast successfully to an int, set the choice that will
+        make its way into the answers dict to the cast int value, not the
+        string representation.
+        """
+        try:
+            int_value = int(value)
+            self._choice = int_value
+            return True
+        except:
+            self.error_message = '%s is not a valid integer.' % value
+            return False
