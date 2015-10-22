@@ -7,15 +7,19 @@ OS := rhel$(OS_MAJOR_VERSION)
 DIST_DIR := dist/$(OS)
 
 PYTHON=python
+CREATEREPO_WORKERS=4
 ifeq ($(OS),rhel7)
 	YUMREPO_LOCATION=/fs/UMyumrepos/rhel7/stable/Packages/noarch
+	CREATEREPO_WORKERS_CMD=--workers=$(CREATEREPO_WORKERS)
 endif
 ifeq ($(OS),rhel6)
 	YUMREPO_LOCATION=/fs/UMyumrepos/rhel6/stable/Packages/noarch
+	CREATEREPO_WORKERS_CMD=--workers=$(CREATEREPO_WORKERS)
 endif
 ifeq ($(OS),rhel5)
 	PYTHON=python26
 	YUMREPO_LOCATION=/fs/UMyumrepos/rhel5/stable/noarch
+	CREATEREPO_WORKERS_CMD=
 endif
 
 REQUIRES := $(PYTHON),$(PYTHON)-netaddr
@@ -36,7 +40,7 @@ rpm:
 package:
 	@echo ================================================================
 	@echo cp /fs/UMbuild/$(PACKAGE)/$(DIST_DIR)/$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm $(YUMREPO_LOCATION)
-	@echo createrepo /fs/UMyumrepos/$(OS)/stable
+	@echo createrepo $(CREATEREPO_WORKERS_CMD) /fs/UMyumrepos/$(OS)/stable
 
 .PHONY: build
 build: rpm package
