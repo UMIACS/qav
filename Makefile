@@ -54,7 +54,7 @@ tag:
 
 
 .PHONY: upload
-upload:
+upload: clean
 	python setup.py sdist
 	twine upload dist/*
 
