@@ -1,10 +1,13 @@
 # qav (Question Answer Validation)
 # Copyright (C) 2015 UMIACS
 
+import logging
 
 from qav.validators import Validator, CompactListValidator
 from qav.listpack import ListPack
 from qav.utils import bold
+
+logger = logging.getLogger(__name__)
 
 
 class QuestionSet(object):
@@ -104,6 +107,7 @@ class Question(object):
             q = self.question % answers
 
             if not self.choices():
+                logger.warn('No choices were supplied for "%s"' % q)
                 return None
             if self.value in answers:
                 default = Validator.stringify(answers[self.value])
