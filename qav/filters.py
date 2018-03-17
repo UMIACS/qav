@@ -33,6 +33,10 @@ class DynamicFilter(Filter):
 
 class SubFilter(Filter):
 
+    '''
+    SubFilter keeps those choices containing a given substring.
+    '''
+
     def filter(self, value, table=None):
         if table is not None and self.string in table:
             s = table[self.string]
@@ -46,6 +50,10 @@ class SubFilter(Filter):
 
 class PreFilter(Filter):
 
+    '''
+    PreFilter keeps those choices starting with a given substring.
+    '''
+
     def filter(self, value, table=None):
         if table is not None and self.string in table:
             s = table[self.string]
@@ -58,6 +66,10 @@ class PreFilter(Filter):
 
 
 class PostFilter(Filter):
+
+    '''
+    PostFilter keeps those choices ending with a given substring.
+    '''
 
     def filter(self, value, table=None):
         if table is not None and self.string in table:

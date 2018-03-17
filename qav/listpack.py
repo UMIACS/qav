@@ -6,12 +6,15 @@ class ListPack(object):
     BOLD = '\033[1m'
     OFF = '\033[0m'
 
-    def __init__(self, lp, sep=": ", padding="  ", indentation=0, width=79):
+    def __init__(self, lp=None, sep=": ", padding="  ", indentation=0, width=79):
         self.sep = sep
         self.padding = padding
         self.indentation = indentation
         self.width = width
-        self._lp = lp
+        if lp:
+            self._lp = lp
+        else:
+            self._lp = []
 
         self.new_line = '' + (' ' * self.indentation)
 
