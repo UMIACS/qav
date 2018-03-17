@@ -1,6 +1,15 @@
 # qav (Question Answer Validation)
 # Copyright (C) 2015 UMIACS
 
+from __future__ import absolute_import
+from __future__ import print_function
+
+# hack to support python2 and python3
+try:
+    input = raw_input
+except NameError:
+    pass
+
 import logging
 
 from qav.validators import Validator, CompactListValidator
@@ -49,7 +58,7 @@ class QuestionSet(object):
                     for item in additional_readonly_items:
                         lp.append_item(item)
 
-            print lp
+            print(lp)
             confirm_answer = confirm_question.ask()
             if confirm_answer['confirm'] == 'yes':
                 return answers
@@ -130,9 +139,9 @@ class Question(object):
                 if isinstance(self.validator, list):
                     for v in self.validator:
                         if v.error() != '':
-                            print v.error()
+                            print(v.error())
                 else:
-                    print self.validator.error()
+                    print(self.validator.error())
 
     def ask(self, answers=None):
         """ Ask the question, then ask any sub-questions.
@@ -144,8 +153,8 @@ class Question(object):
             answers = {}
         _answers = {}
         if self.multiple:
-            print(bold('Multiple answers are supported for this question.  ' +
-                       'Please enter a "."  character to finish.'))
+            print((bold('Multiple answers are supported for this question.  ' +
+                       'Please enter a "."  character to finish.')))
             _answers[self.value] = []
             answer = self._ask(answers)
             while answer is not None:

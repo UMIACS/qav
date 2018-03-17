@@ -28,5 +28,18 @@ setup(
     license='LGPL v2.1',
     description='Question Answer Validation',
     long_description=long_description,
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Topic :: Software Development :: Libraries",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
+    ],
     **extra
 )

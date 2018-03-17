@@ -8,5 +8,5 @@ dist/
 # pytest/tox
 .cache/
 .pytest_cache/
+.coverage
 .tox/
-

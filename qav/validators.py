@@ -2,6 +2,8 @@
 # Copyright (C) 2015 UMIACS
 
 
+from __future__ import absolute_import
+from __future__ import print_function
 import re
 import socket
 import datetime
@@ -248,9 +250,9 @@ class ListValidator(Validator):
 
     def print_choices(self):
         if len(self.choices) > 0:
-            print "Please select from the following choices:"
+            print("Please select from the following choices:")
             for x, y in enumerate(self.choices):
-                print " [%d] - %s" % (x, str(y))
+                print(" [%d] - %s" % (x, str(y)))
             return True
         else:
             return False
@@ -292,10 +294,10 @@ class TupleValidator(Validator):
 
     def print_choices(self):
         if len(self.choices) > 0:
-            print "Please select from the following choices:"
+            print("Please select from the following choices:")
             for x, y in enumerate(self.choices):
                 a, b = y
-                print " [%d] - %s (%s)" % (x, a, b)
+                print(" [%d] - %s (%s)" % (x, a, b))
             return True
         else:
             return False
@@ -339,23 +341,23 @@ class HashValidator(Validator):
 
     def print_choices(self):
         if len(self.choices) > 0:
-            print "Please select from the following choices:"
+            print("Please select from the following choices:")
             for x, y in enumerate(self.choices):
                 if self.verbose:
-                    print " [%d] - %s (%s)" % (x, y, self.choices[y])
+                    print(" [%d] - %s (%s)" % (x, y, self.choices[y]))
                 else:
-                    print " [%d] - %s" % (x, y)
+                    print(" [%d] - %s" % (x, y))
             return True
         else:
             return False
 
     def validate(self, value):
         """Return a boolean if the choice is a number in the enumeration"""
-        if value in self.choices.keys():
+        if value in list(self.choices.keys()):
             self._choice = value
             return True
         try:
-            self._choice = self.choices.keys()[int(value)]
+            self._choice = list(self.choices.keys())[int(value)]
             return True
         except:
             self.error_message = '%s is not a valid choice.' % value
