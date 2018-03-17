@@ -1,3 +1,4 @@
+PYTHON=python
 
 PACKAGE = qav
 VERSION = $(shell git describe --abbrev=0 --tags)
@@ -6,17 +7,8 @@ OS_MAJOR_VERSION = $(shell lsb_release -rs | cut -f1 -d.)
 OS := rhel$(OS_MAJOR_VERSION)
 DIST_DIR := dist/$(OS)
 
-PYTHON=python
 CREATEREPO_WORKERS=4
-ifeq ($(OS),rhel7)
-	YUMREPO_LOCATION=/fs/UMyumrepos/rhel7/stable/Packages/noarch
-	CREATEREPO_WORKERS_CMD=--workers=$(CREATEREPO_WORKERS)
-endif
-ifeq ($(OS),rhel6)
-	YUMREPO_LOCATION=/fs/UMyumrepos/rhel6/stable/Packages/noarch
-	CREATEREPO_WORKERS_CMD=--workers=$(CREATEREPO_WORKERS)
-endif
-
+YUMREPO_LOCATION=/fs/UMyumrepos/$(OS)/stable/Packages/noarch
 REQUIRES := $(PYTHON),$(PYTHON)-netaddr
 
 .PHONY: rpm
@@ -32,7 +24,7 @@ rpm:
 package:
 	@echo ================================================================
 	@echo cp /fs/UMbuild/$(PACKAGE)/$(DIST_DIR)/$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm $(YUMREPO_LOCATION)
-	@echo createrepo $(CREATEREPO_WORKERS_CMD) /fs/UMyumrepos/$(OS)/stable
+	@echo createrepo --workers=$(CREATEREPO_WORKERS) /fs/UMyumrepos/$(OS)/stable
 
 .PHONY: build
 build: rpm package
