@@ -3,11 +3,10 @@ stages:
 
 run_unit_tests__python27:
   stage: test
-  image: python/2.7
+  image: python:2.7-slim
   script:
-    - python setup.py develop
-    - pip install pytest
-    - pytest tests/
+    - pip install tox
+    - tox -e py27
   tags:
     - docker
 

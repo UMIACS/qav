@@ -352,20 +352,16 @@ class TestHashValidator(object):
  [1] - twenty (20)
 '''
 
-    @pytest.mark.parametrize('key,value,idx', [
-        ('ten', '10', '1'),
-        ('twenty', '20', '0'),
+    @pytest.mark.parametrize('key,value', [
+        ('ten', '10'),
+        ('twenty', '20'),
     ])
-    def test_validate_success(self, key, value, idx):
+    def test_validate_success(self, key, value):
         v = HashValidator({'ten': '10', 'twenty': '20'})
 
         # try passing in the value itself
         assert v.validate(key) == True
         assert v.choice() == key 
-
-        # passing in the index number of out choice should work, too
-        assert v.validate(idx) == True
-        assert v.choice() == key
 
     def test_validate_failure(self):
         v = HashValidator({'ten': '10', 'twenty': '20'})

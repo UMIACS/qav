@@ -5,7 +5,8 @@ dist/
 .*.swp
 .DS_Store
 
-# pytest
+# pytest/tox
 .cache/
 .pytest_cache/
+.tox/
 
