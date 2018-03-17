@@ -6,7 +6,7 @@ ability to validate input.
 It provides question sets to group related questions.  Questions can also
 have subordinate Questions underneath them.  Answers to those questions can be
 validated based on a simple, static piece of information provided by you.
-Answers mail also be validated dynamically based on the information provided in
+Answers may also be validated dynamically based on the information provided in
 previous questions.
 
 ## Example Usage
@@ -31,6 +31,12 @@ How old am I? : 0
 ```
 $ pip install qav
 ```
+
+# Compatibility
+This library has been tested to support:
+* Python26
+* Python27
+* Python36
 
 ## License
 
