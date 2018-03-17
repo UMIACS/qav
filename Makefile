@@ -16,16 +16,8 @@ ifeq ($(OS),rhel6)
 	YUMREPO_LOCATION=/fs/UMyumrepos/rhel6/stable/Packages/noarch
 	CREATEREPO_WORKERS_CMD=--workers=$(CREATEREPO_WORKERS)
 endif
-ifeq ($(OS),rhel5)
-	PYTHON=python26
-	YUMREPO_LOCATION=/fs/UMyumrepos/rhel5/stable/noarch
-	CREATEREPO_WORKERS_CMD=
-endif
 
 REQUIRES := $(PYTHON),$(PYTHON)-netaddr
-ifeq ($(OS),rhel5)
-	REQUIRES := $(REQUIRES),python26-ordereddict
-endif
 
 .PHONY: rpm
 rpm:
