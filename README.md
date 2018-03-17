@@ -32,7 +32,7 @@ How old am I? : 0
 $ pip install qav
 ```
 
-# Compatibility
+## Compatibility
 This library has been tested to support:
 * Python26
 * Python27
