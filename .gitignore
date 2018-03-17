@@ -4,3 +4,8 @@ dist/
 *.pyc
 .*.swp
 .DS_Store
+
+# pytest
+.cache/
+.pytest_cache/
+

@@ -7,23 +7,35 @@ import socket
 import datetime
 import time
 from copy import copy
-from netaddr import IPAddress
-from netaddr.core import AddrFormatError
 try:
     from collections import OrderedDict
 except ImportError:
     from ordereddict import OrderedDict
 
+from netaddr import IPAddress
+from netaddr.core import AddrFormatError
+
 
 class Validator(object):
 
+    '''
+    Validator asserts if an answer given is acceptable.  It does this through
+    the return value of validate().
+
+    Validators can also transform an acceptable value by setting `_choice`.
+    Think of the example of a date being passed in as a string, being
+    validated, and then transformed into a datetime object...
+
+    If validation failed, an error message can be set.
+    '''
+
     def __init__(self, blank=False, negate=False):
         self.blank = blank
+        self.negate = negate  # TODO this doesn't get used internally..........
         self._choice = None
         self._hints = {}
         self.answers = {}
         self.error_message = None
-        self.negate = negate
 
     def validate(self, value):
         '''The most basic validation'''
@@ -60,7 +72,7 @@ class YesNoValidator(Validator):
             self._choice = value.lower()
             return True
         else:
-            self.error_message = 'ERROR: Please choose yes or no.'
+            self.error_message = 'Please choose yes or no.'
             return False
 
 
@@ -77,11 +89,11 @@ class CompactListValidator(Validator):
 
     def validate(self, value):
         if value.lower() in self._choices:
+            # TODO should this really call lower()?
             self._choice = value.lower()
             return True
         else:
-            self.error_message = 'ERROR: Please choose %s.' % \
-                '/'.join(self._choices)
+            self.error_message = 'Please choose %s.' % '/'.join(self._choices)
             return False
 
 
@@ -96,7 +108,10 @@ class DateValidator(Validator):
             return True
         if DateValidator.date_regex.match(value):
             # TODO this should account for the GMT offset
-            date = time.strptime(value, "%Y%m%d")
+            try:
+                date = time.strptime(value, "%Y%m%d")
+            except ValueError:
+                return False
             self._choice = datetime.datetime(*date[:6])
             return True
         else:
@@ -139,7 +154,7 @@ class MacAddressValidator(Validator):
             self._choice = value
             return True
         else:
-            self.error_message = '%s is not a valid mac address.' % value
+            self.error_message = '%s is not a valid MAC address.' % value
             return False
 
 
@@ -150,7 +165,7 @@ class IPAddressValidator(Validator):
         try:
             self._choice = IPAddress(value)
             return True
-        except AddrFormatError:
+        except (ValueError, AddrFormatError):
             self.error_message = '%s is not a valid IP address.' % value
             return False
 
@@ -161,7 +176,7 @@ class IPNetmaskValidator(Validator):
         """Return a boolean if the value is a valid netmask."""
         try:
             self._choice = IPAddress(value)
-        except AddrFormatError:
+        except (ValueError, AddrFormatError):
             self.error_message = '%s is not a valid IP address.' % value
             return False
         if self._choice.is_netmask():
@@ -256,6 +271,7 @@ class ListValidator(Validator):
 class TupleValidator(Validator):
 
     def __init__(self, choices, filters=None):
+        assert isinstance(choices, list)
         self._choices = choices
         if filters is None:
             self.filters = []

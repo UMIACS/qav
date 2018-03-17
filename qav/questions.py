@@ -36,8 +36,8 @@ class QuestionSet(object):
 
         while True:
             answers = self.ask()
-            lp = ListPack(map(lambda q: (q.printable_name, answers[q.value]),
-                              self.questions))
+            lp = ListPack(
+                [(q.printable_name, answers[q.value]) for q in self.questions])
 
             # add in items that were not asked as questions but should be
             # displayed alongside that information
@@ -90,6 +90,9 @@ class Question(object):
     def __repr__(self):
         return self.value
 
+    def _get_input(self, text):
+        return raw_input(text)
+
     def _ask(self, answers):
         """ Really ask the question.
 
@@ -111,11 +114,11 @@ class Question(object):
                 return None
             if self.value in answers:
                 default = Validator.stringify(answers[self.value])
-                answer = raw_input("%s [%s]: " % (q, default))
+                answer = self._get_input("%s [%s]: " % (q, default))
                 if answer == '':
                     answer = answers[self.value]
             else:
-                answer = raw_input("%s: " % q)
+                answer = self._get_input("%s: " % q)
             # if we are in multiple mode and the answer is just the empty
             # string (enter/return pressed) then we will just answer None
             # to indicate we are done
@@ -135,7 +138,7 @@ class Question(object):
         """ Ask the question, then ask any sub-questions.
 
             This returns a dict with the {value: answer} pairs for the current
-            question plus all decendent questions.
+            question plus all descendant questions.
         """
         if answers is None:
             answers = {}
@@ -182,8 +185,7 @@ class Question(object):
         """ Return the answer for the question from the validator.
 
             This will ultimately only be called on the first validator if
-            multiple validators have been added.  Since we ultimately we and
-            all the validators this should not cause any issues.
+            multiple validators have been added.
         """
         if isinstance(self.validator, list):
             return self.validator[0].choice()
@@ -203,6 +205,7 @@ class Question(object):
         if isinstance(question, Question):
             self._questions.append(question)
         else:
+            # TODO this should raise a less generic exception
             raise Exception
 
     def remove(self, question):
