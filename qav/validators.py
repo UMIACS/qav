@@ -133,12 +133,12 @@ class DomainNameValidator(Validator):
             return False
         try:
             ipaddress = socket.gethostbyname(value)
-        except:
+        except socket.gaierror:
             self.error_message = '%s does not resolve.' % value
             return False
         try:
             socket.gethostbyaddr(ipaddress)
-        except:
+        except socket.herror:
             self.error_message = \
                 '%s reverse address (%s) does not resolve.' % \
                 (value, ipaddress)
@@ -194,7 +194,7 @@ class URIValidator(Validator):
     uri_regex = re.compile(
         r'^\w+:(?://)?'  # uri scheme
         # domain...
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # NOQA
         r'localhost|'  # localhost...
         r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
         r'(?::\d+)?'  # optional port
@@ -265,7 +265,7 @@ class ListValidator(Validator):
         try:
             self._choice = self.choices[int(value)]
             return True
-        except:
+        except (ValueError, IndexError):
             self.error_message = '%s is not a valid choice.' % value
             return False
 
@@ -311,7 +311,7 @@ class TupleValidator(Validator):
         try:
             self._choice = self.choices[int(value)][0]
             return True
-        except:
+        except (ValueError, IndexError):
             self.error_message = '%s is not a valid choice.' % value
             return False
 
@@ -359,7 +359,7 @@ class HashValidator(Validator):
         try:
             self._choice = list(self.choices.keys())[int(value)]
             return True
-        except:
+        except (ValueError, IndexError):
             self.error_message = '%s is not a valid choice.' % value
             return False
 
@@ -369,7 +369,7 @@ class IntegerValidator(Validator):
     def validate(self, value):
         """
         Return True if the choice is an integer; False otherwise.
-        
+
         If the value was cast successfully to an int, set the choice that will
         make its way into the answers dict to the cast int value, not the
         string representation.
@@ -378,6 +378,6 @@ class IntegerValidator(Validator):
             int_value = int(value)
             self._choice = int_value
             return True
-        except:
+        except ValueError:
             self.error_message = '%s is not a valid integer.' % value
             return False

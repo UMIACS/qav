@@ -154,7 +154,7 @@ class Question(object):
         _answers = {}
         if self.multiple:
             print((bold('Multiple answers are supported for this question.  ' +
-                       'Please enter a "."  character to finish.')))
+                        'Please enter a "."  character to finish.')))
             _answers[self.value] = []
             answer = self._ask(answers)
             while answer is not None:

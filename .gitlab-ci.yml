@@ -28,3 +28,11 @@ run_unit_tests__python36:
   tags:
     - docker
 
+flake8:
+  stage: test
+  image: python:2.7-slim
+  script:
+    - pip install tox
+    - tox -e flake8
+  tags:
+    - docker
