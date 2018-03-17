@@ -34,6 +34,5 @@ flake8:
   script:
     - pip install tox
     - tox -e flake8
-  allow_failure: true
   tags:
     - docker
