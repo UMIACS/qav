@@ -100,7 +100,7 @@ class Question(object):
         return self.value
 
     def _get_input(self, text):
-        return raw_input(text)
+        return input(text)
 
     def _ask(self, answers):
         """ Really ask the question.
