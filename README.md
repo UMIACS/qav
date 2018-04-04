@@ -1,4 +1,10 @@
-# Question Answer Validation
+# Question Answer Validation (qav)
+
+[![pypi version](https://img.shields.io/pypi/v/qav.svg)](https://pypi.python.org/pypi/qav)
+[![license](https://img.shields.io/pypi/l/qav.svg)](https://pypi.python.org/pypi/qav)
+[![pyversions](https://img.shields.io/pypi/pyversions/qav.svg)](https://pypi.python.org/pypi/qav)
+[![pipeline status](https://gitlab.umiacs.umd.edu/staff/qav/badges/master/pipeline.svg)](https://gitlab.umiacs.umd.edu/staff/qav/commits/master)
+[![coverage report](https://gitlab.umiacs.umd.edu/staff/qav/badges/master/coverage.svg)](https://gitlab.umiacs.umd.edu/staff/qav/commits/master)
 
 qav is a Python library for console-based question and answering, with the
 ability to validate input.
