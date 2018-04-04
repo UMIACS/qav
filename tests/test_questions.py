@@ -2,12 +2,40 @@
 
 import pytest
 
-from qav.questions import Question
+from qav.questions import Question, QuestionSet
 from qav.validators import (
     ListValidator,
     Validator,
     YesNoValidator,
 )
+
+
+class TestQuestionSet(object):
+
+    def test_init(self):
+        qs = QuestionSet()
+        assert qs.questions == []
+        assert qs.ask() == {}
+
+    def test_add_remove(self):
+        qs = QuestionSet()
+        q1 = Question('foo', 'foo')
+        q2 = Question('bar', 'bar')
+        qs.add(q1).add(q2)
+        assert len(qs.questions) == 2
+        qs.remove(q1)
+        assert qs.questions == [q2]
+        qs.remove(q2)
+        assert qs.questions == []
+
+    def test_ask(self, give_input):
+        qs = QuestionSet()
+        q1 = Question('foo', 'foo')
+        q2 = Question('bar', 'bar')
+        qs.add(q1).add(q2)
+        give_input(q1, ['98'])
+        give_input(q2, ['99'])
+        assert qs.ask() == {'foo': '98', 'bar': '99'}
 
 
 class TestQuestion(object):

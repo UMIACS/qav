@@ -27,9 +27,11 @@ class QuestionSet(object):
 
     def add(self, question):
         self.questions.append(question)
+        return self
 
     def remove(self, question):
         self.questions.remove(question)
+        return self
 
     def ask(self):
         for question in self.questions:
