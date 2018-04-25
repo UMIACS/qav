@@ -2,10 +2,8 @@
 
 try:
     from setuptools import setup
-    extra = dict(test_suite="tests.test.suite", include_package_data=True)
 except ImportError:
     from distutils.core import setup
-    extra = {}
 
 long_description = \
 '''
@@ -24,6 +22,8 @@ setup(
     install_requires=[
         'netaddr',
     ],
+    setup_requires=['pytest-runner',],
+    tests_require=['pytest',],
     url='https://github.com/UMIACS/qav',
     license='LGPL v2.1',
     description='Question Answer Validation',
@@ -42,5 +42,5 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
     ],
-    **extra
+
 )
