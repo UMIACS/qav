@@ -1,5 +1,7 @@
 stages:
   - test
+  - build
+  - deploy
 
 run_unit_tests__python26:
   stage: test
@@ -45,3 +47,29 @@ flake8__python36:
     - tox -e flake8-py36
   tags:
     - docker
+
+build_python_package:
+  stage: build
+  image: python:3.6-slim
+  script:
+    - python setup.py sdist bdist_wheel
+  artifacts:
+    expire_in: 1hr
+    paths:
+      - dist/
+  only:
+    - tags
+  tags:
+    - docker
+
+upload_pypi:
+  stage: deploy
+  image: python:3.6-slim
+  script:
+    - pip install -q twine
+    - twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.gz
+  when: manual
+  only:
+    - tags
+  dependencies:
+    - build_python_package

@@ -36,13 +36,6 @@ tag:
 	git commit -m "Tagging $(VERSION)"
 	git tag -a $(VERSION) -m "Tagging $(VERSION)"
 
-
-.PHONY: upload
-upload: clean
-	python setup.py sdist
-	twine upload dist/*
-
-
 .PHONY: clean
 clean:
 	rm -rf dist/
