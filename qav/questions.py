@@ -121,7 +121,7 @@ class Question(object):
             q = self.question % answers
 
             if not self.choices():
-                logger.warn('No choices were supplied for "%s"' % q)
+                logger.warning('No choices were supplied for "%s"' % q)
                 return None
             if self.value in answers:
                 default = Validator.stringify(answers[self.value])
