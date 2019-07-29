@@ -10,7 +10,12 @@ OS_MAJOR_VERSION = $(shell lsb_release -rs | cut -f1 -d.)
 OS := rhel$(OS_MAJOR_VERSION)
 DIST_DIR := dist/$(OS)
 BUILDROOT := /srv/build/$(OS)
+
+ifeq ($(OS),rhel8)
 RPM_FILE := $(PYTHON)-$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm
+else
+RPM_FILE := $(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm
+endif
 
 YUMREPO_LOCATION=/srv/UMyumrepos/$(OS)/stable
 REQUIRES := $(PYTHON),$(PYTHON)-netaddr
