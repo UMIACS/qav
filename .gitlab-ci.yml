@@ -7,7 +7,7 @@ run_unit_tests__python26:
   stage: test
   image: dockershelf/python:2.6
   script:
-    - pip install tox
+    - pip install -q tox
     - tox -e py26
   tags:
     - docker
@@ -16,7 +16,7 @@ run_unit_tests__python27:
   stage: test
   image: python:2.7-slim
   script:
-    - pip install tox
+    - pip install -q tox
     - tox -e py27
   tags:
     - docker
@@ -25,7 +25,7 @@ run_unit_tests__python36:
   stage: test
   image: python:3.6-slim
   script:
-    - pip install tox
+    - pip install -q tox
     - tox -e py36
   tags:
     - docker
@@ -34,7 +34,7 @@ flake8__python27:
   stage: test
   image: python:2.7-slim
   script:
-    - pip install tox
+    - pip install -q tox
     - tox -e flake8-py27
   tags:
     - docker
@@ -43,10 +43,38 @@ flake8__python36:
   stage: test
   image: python:3.6-slim
   script:
-    - pip install tox
+    - pip install -q tox
     - tox -e flake8-py36
   tags:
     - docker
+
+.build_rpm_template: &build_rpm_definition
+  stage: build
+  image: registry.umiacs.umd.edu/docker/build/umbuild:$DISTRO
+  script:
+    - make rpm PYTHON=$PYTHON
+  artifacts:
+    expire_in: 1hr
+    paths:
+      - dist/
+  only:
+    - tags
+  tags:
+    - docker
+
+build_rpm_rhel7:
+  <<: *build_rpm_definition
+  variables:
+    DISTRO: rhel7
+    PYTHON: python
+
+build_rpm_rhel8:
+  <<: *build_rpm_definition
+  script:
+    - make rpm PYTHON=python2
+    - make rpm PYTHON=python3
+  variables:
+    DISTRO: rhel8
 
 build_python_package:
   stage: build
@@ -61,6 +89,37 @@ build_python_package:
     - tags
   tags:
     - docker
+
+deploy_rpm_rhel7:
+  stage: deploy
+  image: registry.umiacs.umd.edu/docker/build/umbuild:rhel7
+  script:
+    - make copy_rpm PYTHON=python
+    - make createrepo
+  when: manual
+  only:
+    - tags
+  tags:
+    - umrepos
+    - docker
+  dependencies:
+    - build_rpm_rhel7
+
+deploy_rpm_rhel8:
+  stage: deploy
+  image: registry.umiacs.umd.edu/docker/build/umbuild:rhel8
+  script:
+    - make copy_rpm PYTHON=python2
+    - make copy_rpm PYTHON=python3
+    - make createrepo
+  when: manual
+  only:
+    - tags
+  tags:
+    - umrepos
+    - docker
+  dependencies:
+    - build_rpm_rhel8
 
 upload_pypi:
   stage: deploy
