@@ -1,4 +1,7 @@
-PYTHON=python
+TAR = tar
+GIT = git
+
+# Note that there is no default PYTHON interpreter.  It must be specified.
 
 PACKAGE = qav
 VERSION = $(shell git describe --abbrev=0 --tags)
@@ -6,28 +9,34 @@ RELEASE = 1
 OS_MAJOR_VERSION = $(shell lsb_release -rs | cut -f1 -d.)
 OS := rhel$(OS_MAJOR_VERSION)
 DIST_DIR := dist/$(OS)
+BUILDROOT := /srv/build/$(OS)
+RPM_FILE := $(PYTHON)-$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm
 
-CREATEREPO_WORKERS=4
-YUMREPO_LOCATION=/fs/UMyumrepos/$(OS)/stable/Packages/noarch
+YUMREPO_LOCATION=/srv/UMyumrepos/$(OS)/stable
 REQUIRES := $(PYTHON),$(PYTHON)-netaddr
 
 .PHONY: rpm
 rpm:
-	-mkdir -p $(DIST_DIR)
-	$(PYTHON) setup.py bdist_rpm \
-			--python=$(PYTHON) \
-			--requires=$(REQUIRES) \
-			--dist-dir=$(DIST_DIR) \
-			--binary-only
+	$(eval TEMPDIR := $(shell mktemp -d /tmp/tmp.XXXXX))
+	mkdir -p $(TEMPDIR)/$(PACKAGE)-$(VERSION)
+	$(GIT) clone . $(TEMPDIR)/$(PACKAGE)-$(VERSION)
+	$(GIT) \
+		--git-dir=$(TEMPDIR)/$(PACKAGE)-$(VERSION)/.git \
+		--work-tree=$(TEMPDIR)/$(PACKAGE)-$(VERSION) \
+		checkout tags/$(VERSION)
+	$(TAR) -C $(TEMPDIR) --exclude .git -czf $(BUILDROOT)/SOURCES/$(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
+	rpmbuild -bb $(PACKAGE).spec --define "python ${PYTHON}" --define "version ${VERSION}"
+	rm -rf $(TEMPDIR)
+	mkdir -p $(DIST_DIR)
+	cp $(BUILDROOT)/RPMS/noarch/$(RPM_FILE) $(DIST_DIR)
 
-.PHONY: package
-package:
-	@echo ================================================================
-	@echo cp /fs/UMbuild/$(PACKAGE)/$(DIST_DIR)/$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm $(YUMREPO_LOCATION)
-	@echo createrepo --workers=$(CREATEREPO_WORKERS) /fs/UMyumrepos/$(OS)/stable
+.PHONY: copy_rpm
+copy_rpm:
+	sudo cp $(DIST_DIR)/$(RPM_FILE) $(YUMREPO_LOCATION)/Packages/noarch
 
-.PHONY: build
-build: rpm package
+.PHONY: createrepo
+createrepo:
+	sudo createrepo --workers=4 $(YUMREPO_LOCATION)
 
 .PHONY: tag
 tag:
