@@ -3,11 +3,7 @@
 %define release 1
 
 Summary: Question Answer Validation
-%if 0%{?el8}
 Name: %{python}-%{name}
-%else
-Name: %{name}
-%endif
 Version: %{version}
 Release: %{release}
 Source0: %{unmangled_name}-%{version}.tar.gz
