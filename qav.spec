@@ -3,7 +3,7 @@
 %define release 1
 
 Summary: Question Answer Validation
-Name: {%python}-%{name}
+Name: %{python}-%{name}
 Version: %{version}
 Release: %{release}
 Source0: %{unmangled_name}-%{version}.tar.gz

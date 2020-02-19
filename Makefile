@@ -15,7 +15,6 @@ BUILDROOT := /srv/build/$(OS)
 RPM_FILE := $(PYTHON)-$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm
 
 YUMREPO_LOCATION=/srv/UMyumrepos/$(OS)/stable
-REQUIRES := $(PYTHON),$(PYTHON)-netaddr
 
 .PHONY: rpm
 rpm:

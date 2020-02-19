@@ -30,8 +30,8 @@ flake8__python36:
     expire_in: 1hr
     paths:
       - dist/
-#  only:
-#    - tags
+  only:
+    - tags
   tags:
     - docker
 
@@ -54,12 +54,13 @@ build_python_package:
     expire_in: 1hr
     paths:
       - dist/
-#  only:
-#    - tags
+  only:
+    - tags
   tags:
     - docker
 
 .deploy_rpm_template: &deploy_rpm_definition
+  stage: deploy
   image: registry.umiacs.umd.edu/docker/build/umbuild:$DISTRO
   script:
     - make copy_rpm
