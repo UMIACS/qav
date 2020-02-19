@@ -31,7 +31,7 @@ How old am I? : 0
 ```
 
 ## Requirements
-`netaddr`
+[`netaddr`](https://pypi.org/project/netaddr/)
 
 ## Installation
 ```
@@ -40,9 +40,9 @@ $ pip install qav
 
 ## Compatibility
 This library has been tested to support:
-* Python26
-* Python27
-* Python36
+* Python 3.6
+
+It most likely will still run on Python 2.7, but official support has been dropped.
 
 ## License
 
