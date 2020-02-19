@@ -1,5 +1,6 @@
 TAR = tar
 GIT = git
+PYTHON = python3
 
 # Note that there is no default PYTHON interpreter.  It must be specified.
 
@@ -11,11 +12,7 @@ OS := rhel$(OS_MAJOR_VERSION)
 DIST_DIR := dist/$(OS)
 BUILDROOT := /srv/build/$(OS)
 
-ifeq ($(OS),rhel8)
 RPM_FILE := $(PYTHON)-$(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm
-else
-RPM_FILE := $(PACKAGE)-$(VERSION)-$(RELEASE).noarch.rpm
-endif
 
 YUMREPO_LOCATION=/srv/UMyumrepos/$(OS)/stable
 REQUIRES := $(PYTHON),$(PYTHON)-netaddr
