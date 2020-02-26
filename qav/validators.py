@@ -1,18 +1,15 @@
 # qav (Question Answer Validation)
 # Copyright (C) 2015 UMIACS
 
-
 from __future__ import absolute_import
 from __future__ import print_function
+
 import re
 import socket
 import datetime
 import time
 from copy import copy
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
+from collections import OrderedDict
 
 from netaddr import IPAddress
 from netaddr.core import AddrFormatError

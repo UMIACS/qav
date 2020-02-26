@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
+from collections import OrderedDict
 
 import pytest
 from netaddr import IPAddress
