@@ -2,4 +2,4 @@
 # Copyright (C) 2015 UMIACS
 
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
