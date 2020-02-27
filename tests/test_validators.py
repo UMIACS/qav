@@ -66,7 +66,7 @@ class TestCompactListValidator(object):
 
     @pytest.mark.parametrize('value', ('foo', 'bar', 'baz'))
     def test_validate_success(self, value):
-        v = CompactListValidator(choices=['foo', 'bar', 'baz']) 
+        v = CompactListValidator(choices=['foo', 'bar', 'baz'])
         assert v.validate(value) == True
         assert v.choice() == value
 
@@ -229,6 +229,11 @@ class TestEmailValidator(object):
 
 class TestListValidator(object):
 
+    def test_non_choices(self):
+        choices = [None, 'foo', 'bar']
+        v = ListValidator(choices)
+        assert v.choices == [None, 'bar', 'foo']
+
     def test_filters(self):
         choices = ['one dog', 'two dogs']
         v = ListValidator(choices, filters=[PreFilter('one')])
@@ -260,7 +265,7 @@ class TestListValidator(object):
     ])
     def test_validate_success(self, value, idx):
         v = ListValidator(['a', 'b', 'c'])
-        
+
         # try passing in the value itself
         assert v.validate(value) == True
         assert v.choice() == value
@@ -284,7 +289,7 @@ class TestTupleValidator(object):
             ('ABRT', 'Abort'),
             ('CONT', 'Continue')])
         assert v.choices == [('ABRT', 'Abort'),
-            ('CONT', 'Continue')]
+                             ('CONT', 'Continue')]
 
     def test_list_of_tuples_passed_as_choice(self):
         with pytest.raises(AssertionError):
@@ -304,7 +309,7 @@ class TestTupleValidator(object):
  [2] - c (C)
 '''
 
-    def test_no_choices(self, capsys): 
+    def test_no_choices(self, capsys):
         v = TupleValidator([])
         assert v.print_choices() == False
         assert v.validate('0') == False
@@ -358,7 +363,7 @@ class TestHashValidator(object):
 
         # try passing in the value itself
         assert v.validate(key) == True
-        assert v.choice() == key 
+        assert v.choice() == key
 
     def test_validate_failure(self):
         v = HashValidator({'ten': '10', 'twenty': '20'})
