@@ -35,7 +35,6 @@ class TestFilters(object):
             ])
         assert prune_foo_and_bar_validator.choices == ['baz']
 
-
     def test_sub_filter(self):
         # subfilter should keep choices containing a given string
         choices = ['foo', 'bar', 'baz']

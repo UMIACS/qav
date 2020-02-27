@@ -52,13 +52,13 @@ class TestYesNoValidator(object):
     @pytest.mark.parametrize('value', ('yes', 'YES', 'no', 'NO'))
     def test_validate_success(self, value):
         v = YesNoValidator()
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == value.lower()
 
     def test_validate_failure(self):
         v = YesNoValidator()
-        assert v.validate('something else') == False
-        assert v.choice() == None
+        assert v.validate('something else') is False
+        assert v.choice() is None
         assert v.error() == 'ERROR: Please choose yes or no.'
 
 
@@ -67,12 +67,12 @@ class TestCompactListValidator(object):
     @pytest.mark.parametrize('value', ('foo', 'bar', 'baz'))
     def test_validate_success(self, value):
         v = CompactListValidator(choices=['foo', 'bar', 'baz'])
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == value
 
     def test_validate_failure(self):
         v = CompactListValidator(choices=['foo', 'bar', 'baz'])
-        assert v.validate('junk') == False
+        assert v.validate('junk') is False
         assert v.error() == 'ERROR: Please choose foo/bar/baz.'
 
 
@@ -84,29 +84,29 @@ class TestDateValidator(object):
     ])
     def test_validate_success(self, value, expected_choice):
         v = DateValidator()
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == expected_choice
 
     @pytest.mark.parametrize('value', ('20170517 00:00:00', '5/18/1992', 'foo'))
     def test_validate_failure(self, value):
-        assert DateValidator().validate(value) == False
+        assert DateValidator().validate(value) is False
 
 
 class TestDomainNameValidator(object):
 
     def test_is_fqdn(self):
         v = DomainNameValidator()
-        assert v.validate('localhost') == False
+        assert v.validate('localhost') is False
         assert v.error() == 'ERROR: localhost is not a fully qualified domain name.'
 
     def test_does_resolve(self):
         v = DomainNameValidator()
-        assert v.validate('google.com') == True
+        assert v.validate('google.com') is True
         assert v.choice() == 'google.com'
 
     def test_does_not_resolve(self):
         v = DomainNameValidator()
-        assert v.validate('lsdkajflsdjsldsfjk.com') == False
+        assert v.validate('lsdkajflsdjsldsfjk.com') is False
         assert v.error() == 'ERROR: lsdkajflsdjsldsfjk.com does not resolve.'
 
 
@@ -118,7 +118,7 @@ class TestMacAddressValidator(object):
     ))
     def test_validate_success(self, value):
         v = MacAddressValidator()
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == value
 
     @pytest.mark.parametrize('value', (
@@ -130,7 +130,7 @@ class TestMacAddressValidator(object):
     ))
     def test_validate_failure(self, value):
         v = MacAddressValidator()
-        assert v.validate(value) == False
+        assert v.validate(value) is False
         assert v.error() == 'ERROR: %s is not a valid MAC address.' % value
 
 
@@ -143,7 +143,7 @@ class TestIPAddressValidator(object):
     ))
     def test_validate_success(self, value):
         v = IPAddressValidator()
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == IPAddress(value)
 
     @pytest.mark.parametrize('value', (
@@ -153,7 +153,7 @@ class TestIPAddressValidator(object):
     ))
     def test_validate_failure(self, value):
         v = IPAddressValidator()
-        assert v.validate(value) == False
+        assert v.validate(value) is False
         assert v.error() == 'ERROR: %s is not a valid IP address.' % value
 
 
@@ -166,7 +166,7 @@ class TestIPNetmaskValidator(object):
     ))
     def test_validate_success(self, value):
         v = IPNetmaskValidator()
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == IPAddress(value)
 
     @pytest.mark.parametrize('value', (
@@ -177,7 +177,7 @@ class TestIPNetmaskValidator(object):
     ))
     def test_validate_failure(self, value):
         v = IPNetmaskValidator()
-        assert v.validate(value) == False
+        assert v.validate(value) is False
         assert v.error_message is not None
 
 
@@ -192,7 +192,7 @@ class TestURIValidator(object):
     ))
     def test_validate_success(self, value):
         v = URIValidator()
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == value
 
     @pytest.mark.parametrize('value', (
@@ -204,7 +204,7 @@ class TestURIValidator(object):
     ))
     def test_validate_failure(self, value):
         v = URIValidator()
-        assert v.validate(value) == False
+        assert v.validate(value) is False
         assert v.error() == 'ERROR: %s is not a valid URI' % value
 
 
@@ -212,7 +212,7 @@ class TestEmailValidator(object):
 
     def test_validate_success(self):
         v = EmailValidator()
-        assert v.validate('user@example.com') == True
+        assert v.validate('user@example.com') is True
         assert v.choice() == 'user@example.com'
 
     @pytest.mark.parametrize('value', (
@@ -223,7 +223,7 @@ class TestEmailValidator(object):
     ))
     def test_validate_failure(self, value):
         v = EmailValidator()
-        assert v.validate(value) == False
+        assert v.validate(value) is False
         assert v.error() == 'ERROR: %s is not a valid email address.' % value
 
 
@@ -245,7 +245,7 @@ class TestListValidator(object):
 
     def test_print_choices(self, capsys):
         v = ListValidator(['a', 'b', 'c'])
-        assert v.print_choices() == True
+        assert v.print_choices() is True
         out, err = capsys.readouterr()
         assert out == '''Please select from the following choices:
  [0] - a
@@ -255,8 +255,8 @@ class TestListValidator(object):
 
     def test_no_choices(self):
         v = ListValidator([])
-        assert v.print_choices() == False
-        assert v.validate('0') == False
+        assert v.print_choices() is False
+        assert v.validate('0') is False
 
     @pytest.mark.parametrize('value,idx', [
         ('a', '0'),
@@ -267,41 +267,34 @@ class TestListValidator(object):
         v = ListValidator(['a', 'b', 'c'])
 
         # try passing in the value itself
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == value
 
         # passing in the index number of out choice should work, too
-        assert v.validate(idx) == True
+        assert v.validate(idx) is True
         assert v.choice() == value
 
     def test_validate_failure(self):
         v = ListValidator(['a', 'b', 'c'])
-        assert v.validate('d') == False
+        assert v.validate('d') is False
         assert v.error() == 'ERROR: d is not a valid choice.'
-        assert v.validate('5') == False
+        assert v.validate('5') is False
         assert v.error() == 'ERROR: 5 is not a valid choice.'
 
 
 class TestTupleValidator(object):
 
-    def test_validate_success(self):
-        v = TupleValidator([
-            ('ABRT', 'Abort'),
-            ('CONT', 'Continue')])
-        assert v.choices == [('ABRT', 'Abort'),
-                             ('CONT', 'Continue')]
-
     def test_list_of_tuples_passed_as_choice(self):
         with pytest.raises(AssertionError):
-            v = TupleValidator(('a', 'b'))
+            TupleValidator(('a', 'b'))
         with pytest.raises(AssertionError):
-            v = TupleValidator((
+            TupleValidator((
                 ('a', 'A'),
                 ('b', 'B')))
 
     def test_print_choices(self, capsys):
         v = TupleValidator([('a', 'A'), ('b', 'B'), ('c', 'C')])
-        assert v.print_choices() == True
+        assert v.print_choices() is True
         out, err = capsys.readouterr()
         assert out == '''Please select from the following choices:
  [0] - a (A)
@@ -311,30 +304,37 @@ class TestTupleValidator(object):
 
     def test_no_choices(self, capsys):
         v = TupleValidator([])
-        assert v.print_choices() == False
-        assert v.validate('0') == False
+        assert v.print_choices() is False
+        assert v.validate('0') is False
+
+    def test_validate_success(self):
+        v = TupleValidator([
+            ('ABRT', 'Abort'),
+            ('CONT', 'Continue')])
+        assert v.choices == [('ABRT', 'Abort'),
+                             ('CONT', 'Continue')]
 
     @pytest.mark.parametrize('value,idx', [
         ('a', '0'),
         ('b', '1'),
         ('c', '2'),
     ])
-    def test_validate_success(self, value, idx):
+    def test_validate_success2(self, value, idx):
         v = TupleValidator([('a', 'A'), ('b', 'B'), ('c', 'C')])
 
         # try passing in the value itself
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == value
 
         # passing in the index number of out choice should work, too
-        assert v.validate(idx) == True
+        assert v.validate(idx) is True
         assert v.choice() == value
 
     def test_validate_failure(self):
         v = TupleValidator([('a', 'A'), ('b', 'B'), ('c', 'C')])
-        assert v.validate('d') == False
+        assert v.validate('d') is False
         assert v.error() == 'ERROR: d is not a valid choice.'
-        assert v.validate('5') == False
+        assert v.validate('5') is False
         assert v.error() == 'ERROR: 5 is not a valid choice.'
 
 
@@ -347,7 +347,7 @@ class TestHashValidator(object):
 
     def print_choices(self, capsys):
         v = HashValidator({'ten': '10', 'twenty': '20'})
-        assert v.print_choices() == True
+        assert v.print_choices() is True
         out, err = capsys.readouterr()
         assert out == '''Please select from the following choices:
  [0] - ten (10)
@@ -362,14 +362,14 @@ class TestHashValidator(object):
         v = HashValidator({'ten': '10', 'twenty': '20'})
 
         # try passing in the value itself
-        assert v.validate(key) == True
+        assert v.validate(key) is True
         assert v.choice() == key
 
     def test_validate_failure(self):
         v = HashValidator({'ten': '10', 'twenty': '20'})
-        assert v.validate('d') == False
+        assert v.validate('d') is False
         assert v.error() == 'ERROR: d is not a valid choice.'
-        assert v.validate('5') == False
+        assert v.validate('5') is False
         assert v.error() == 'ERROR: 5 is not a valid choice.'
 
 
@@ -378,9 +378,9 @@ class TestIntegerValidator(object):
     @pytest.mark.parametrize('value', ('2', '4', '8'))
     def test_validate_success(self, value):
         v = IntegerValidator()
-        assert v.validate(value) == True
+        assert v.validate(value) is True
         assert v.choice() == int(value)
 
     @pytest.mark.parametrize('value', ('a2', '4a', 'foo', '7.2'))
     def test_validate_failure(self, value):
-        assert IntegerValidator().validate(value) == False
+        assert IntegerValidator().validate(value) is False

@@ -4,7 +4,6 @@ import pytest
 
 from qav.questions import Question, QuestionSet
 from qav.validators import (
-    ListValidator,
     Validator,
     YesNoValidator,
 )
@@ -55,7 +54,6 @@ class TestQuestion(object):
         assert q1 != q3
         assert q2 != q3
 
-    
     def test_ask(self, give_input):
         q = Question('Your age?', 'age')
         give_input(q, ['99'])
@@ -101,7 +99,7 @@ class TestQuestion(object):
             validator=YesNoValidator())
         # try first with bad input that'll fail validator
         assert not q.validate('NO WAY!')  # not of the proper format
-        assert q.answer() == None
+        assert q.answer() is None
 
         # try again with good input
         assert q.validate('no')

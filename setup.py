@@ -7,13 +7,12 @@ except ImportError:
     from distutils.core import setup
     extra = {}
 
-long_description = \
-'''
+from qav import __version__
+
+long_description = '''
 qav is a Python library for console-based question and answering, with the
 ability to validate input.
 '''
-
-from qav import __version__
 
 setup(
     name='qav',
