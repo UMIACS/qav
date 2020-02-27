@@ -14,6 +14,8 @@ from collections import OrderedDict
 from netaddr import IPAddress
 from netaddr.core import AddrFormatError
 
+from .utils import nonesorter
+
 
 class Validator(object):
 
@@ -242,7 +244,7 @@ class ListValidator(Validator):
                 if f.filter(c, self.answers):
                     _choices.remove(c)
                     break
-        _choices.sort()
+        _choices.sort(key=nonesorter)
         return _choices
 
     def print_choices(self):
