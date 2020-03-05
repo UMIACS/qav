@@ -9,6 +9,7 @@ import socket
 import datetime
 import time
 from copy import copy
+
 from collections import OrderedDict
 
 from netaddr import IPAddress

@@ -1,16 +1,9 @@
 # qav (Question Answer Validation)
 # Copyright (C) 2015 UMIACS
 
-from __future__ import absolute_import
-from __future__ import print_function
-
-# hack to support python2 and python3
-try:
-    input = raw_input
-except NameError:
-    pass
-
 import logging
+
+from typing import Dict, List, Union
 
 from qav.validators import Validator, CompactListValidator
 from qav.listpack import ListPack
@@ -25,21 +18,21 @@ class QuestionSet(object):
         self.answers = {}
         self.questions = []
 
-    def add(self, question):
+    def add(self, question: str) -> 'QuestionSet':
         self.questions.append(question)
         return self
 
-    def remove(self, question):
+    def remove(self, question: str) -> 'QuestionSet':
         self.questions.remove(question)
         return self
 
-    def ask(self):
+    def ask(self) -> Dict:
         for question in self.questions:
             self.answers = dict(self.answers, **question.ask(self.answers))
         return self.answers
 
-    def ask_and_confirm(self, additional_readonly_items=None,
-                        prepend_listpacking_items=True):
+    def ask_and_confirm(self, additional_readonly_items: List = None,
+                        prepend_listpacking_items: bool = True) -> Union[Dict, None]:
         confirm_question = Question('Are these answers correct? ' +
                                     '[yes/abort/retry]', value='confirm',
                                     validator=CompactListValidator(
