@@ -13,8 +13,10 @@ logger = logging.getLogger(__name__)
 
 
 class QuestionSet(object):
+    answers: Dict
+    questions: List
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.answers = {}
         self.questions = []
 
@@ -62,9 +64,12 @@ class QuestionSet(object):
 
 
 class Question(object):
+    answers: Dict
+    _answers: Dict
+    _questions: List
 
-    def __init__(self, question, value, validator=None, multiple=False,
-                 printable_name=None):
+    def __init__(self, question: str, value: str, validator: 'Validator' = None,
+                 multiple=False, printable_name=None) -> None:
         """ Basic Question class.
 
             Supports simple question and answer or question and multiple
@@ -85,19 +90,19 @@ class Question(object):
             self.validator = validator
         self._questions = []
 
-    def __eq__(self, other):
+    def __eq__(self, other: 'Question') -> bool:  # type: ignore
         if self.question == other.question and self.value == other.value:
             return True
         else:
             return False
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.value
 
-    def _get_input(self, text):
+    def _get_input(self, text) -> str:
         return input(text)
 
-    def _ask(self, answers):
+    def _ask(self, answers: Dict) -> Union[Dict, None]:
         """ Really ask the question.
 
             We may need to populate multiple validators with answers here.
@@ -138,7 +143,7 @@ class Question(object):
                 else:
                     print(self.validator.error())
 
-    def ask(self, answers=None):
+    def ask(self, answers: Dict = None) -> Dict:
         """ Ask the question, then ask any sub-questions.
 
             This returns a dict with the {value: answer} pairs for the current
@@ -146,7 +151,7 @@ class Question(object):
         """
         if answers is None:
             answers = {}
-        _answers = {}
+        _answers: Dict = {}
         if self.multiple:
             print((bold('Multiple answers are supported for this question.  ' +
                         'Please enter a "."  character to finish.')))
@@ -167,7 +172,7 @@ class Question(object):
             _answers = dict(_answers, **q.ask(answers))
         return _answers
 
-    def validate(self, answer):
+    def validate(self, answer: str) -> bool:
         """ Validate the answer with our Validator(s)
 
             This will support one or more validator classes being applied to
@@ -185,7 +190,7 @@ class Question(object):
             else:
                 return self.validator.validate(answer)
 
-    def answer(self):
+    def answer(self) -> Dict:
         """ Return the answer for the question from the validator.
 
             This will ultimately only be called on the first validator if
@@ -195,7 +200,7 @@ class Question(object):
             return self.validator[0].choice()
         return self.validator.choice()
 
-    def choices(self):
+    def choices(self) -> bool:
         """ Print the choices for this question.
 
             This may be a empty string and in the case of a list of validators
@@ -205,14 +210,14 @@ class Question(object):
             return self.validator[0].print_choices()
         return self.validator.print_choices()
 
-    def add(self, question):
+    def add(self, question: 'Question') -> None:
         if isinstance(question, Question):
             self._questions.append(question)
         else:
             # TODO this should raise a less generic exception
             raise Exception
 
-    def remove(self, question):
+    def remove(self, question: 'Question') -> None:
         if isinstance(question, Question):
             self._questions.remove(question)
         else:

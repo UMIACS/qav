@@ -1,10 +1,12 @@
 # qav (Question Answer Validation)
 # Copyright (C) 2015 UMIACS
 
+from typing import Callable
+
 
 class Filter(object):
 
-    def __init__(self, string):
+    def __init__(self, string: str) -> None:
         self.string = string
 
 
@@ -15,10 +17,10 @@ class DynamicFilter(Filter):
     filterable_func(choice[, table]) returns True or False.
     '''
 
-    def __init__(self, filterable_func):
+    def __init__(self, filterable_func: Callable) -> None:
         self.filterable_func = filterable_func
 
-    def filter(self, value, table=None):
+    def filter(self, value: str, table=None) -> bool:
         '''
         Return True if the value should be pruned; False otherwise.
 
@@ -37,7 +39,7 @@ class SubFilter(Filter):
     SubFilter keeps those choices containing a given substring.
     '''
 
-    def filter(self, value, table=None):
+    def filter(self, value: str, table=None) -> bool:
         if table is not None and self.string in table:
             s = table[self.string]
         else:
@@ -54,7 +56,7 @@ class PreFilter(Filter):
     PreFilter keeps those choices starting with a given substring.
     '''
 
-    def filter(self, value, table=None):
+    def filter(self, value: str, table=None) -> bool:
         if table is not None and self.string in table:
             s = table[self.string]
         else:
@@ -71,7 +73,7 @@ class PostFilter(Filter):
     PostFilter keeps those choices ending with a given substring.
     '''
 
-    def filter(self, value, table=None):
+    def filter(self, value: str, table=None) -> bool:
         if table is not None and self.string in table:
             s = table[self.string]
         else:

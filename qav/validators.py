@@ -4,6 +4,8 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+from typing import Dict, List, Optional, Any
+
 import re
 import socket
 import datetime
@@ -31,15 +33,15 @@ class Validator(object):
     If validation failed, an error message can be set.
     '''
 
-    def __init__(self, blank=False, negate=False):
+    def __init__(self, blank: bool = False, negate: bool = False) -> None:
         self.blank = blank
         self.negate = negate  # TODO this doesn't get used internally..........
-        self._choice = None
-        self._hints = {}
-        self.answers = {}
-        self.error_message = None
+        self._choice: Any = None
+        self._hints: Dict = {}
+        self.answers: Dict = {}
+        self.error_message: Optional[str] = None
 
-    def validate(self, value):
+    def validate(self, value: Any) -> bool:
         '''The most basic validation'''
         if not self.blank and value == '':
             self.error_message = 'Can not be empty.  Please provide a value.'
@@ -47,29 +49,29 @@ class Validator(object):
         self._choice = value
         return True
 
-    def choice(self):
+    def choice(self) -> Any:
         return self._choice
 
-    def print_choices(self):
+    def print_choices(self) -> bool:
         return True
 
-    def hints(self):
+    def hints(self) -> Dict:
         return self._hints
 
-    def error(self):
+    def error(self) -> str:
         if self.error_message is not None:
             return 'ERROR: %s' % self.error_message
         else:
             return ''
 
     @staticmethod
-    def stringify(value):
+    def stringify(value: Any) -> str:
         return str(value)
 
 
 class YesNoValidator(Validator):
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         if value.lower() in ['yes', 'no']:
             self._choice = value.lower()
             return True
@@ -85,11 +87,11 @@ class CompactListValidator(Validator):
     validator choices.
     '''
 
-    def __init__(self, choices):
+    def __init__(self, choices) -> None:
         self._choices = choices
         super(CompactListValidator, self).__init__()
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         if value.lower() in self._choices:
             # TODO should this really call lower()?
             self._choice = value.lower()
@@ -105,7 +107,7 @@ class DateValidator(Validator):
 
     date_regex = re.compile(r'\d{8}')
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         if self.blank and value == '':
             return True
         if DateValidator.date_regex.match(value):
@@ -122,7 +124,7 @@ class DateValidator(Validator):
 
 class DomainNameValidator(Validator):
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         """Attempts a forward lookup via the socket library and if
            successful will try to do a reverse lookup to verify DNS
            is returning both lookups.
@@ -151,7 +153,7 @@ class MacAddressValidator(Validator):
 
     macaddr_regex = re.compile(r'^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$')
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         if MacAddressValidator.macaddr_regex.match(value.lower()):
             self._choice = value
             return True
@@ -162,7 +164,7 @@ class MacAddressValidator(Validator):
 
 class IPAddressValidator(Validator):
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         """Return a boolean if the value is valid"""
         try:
             self._choice = IPAddress(value)
@@ -174,7 +176,7 @@ class IPAddressValidator(Validator):
 
 class IPNetmaskValidator(Validator):
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         """Return a boolean if the value is a valid netmask."""
         try:
             self._choice = IPAddress(value)
@@ -200,7 +202,7 @@ class URIValidator(Validator):
         r'(?::\d+)?'  # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         '''Return a boolean indicating if the value is a valid URI'''
         if self.blank and value == '':
             return True
@@ -216,7 +218,7 @@ class EmailValidator(Validator):
 
     email_regex = re.compile(r'[^@]+@[^@]+\.[^@]+')
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         if self.blank and value == '':
             return True
         if EmailValidator.email_regex.match(value) and len(value) > 3:
@@ -229,7 +231,7 @@ class EmailValidator(Validator):
 
 class ListValidator(Validator):
 
-    def __init__(self, choices, filters=None):
+    def __init__(self, choices: List, filters: List = None):
         self._choices = choices
         if filters is None:
             self.filters = []
@@ -238,7 +240,7 @@ class ListValidator(Validator):
         super(ListValidator, self).__init__()
 
     @property
-    def choices(self):
+    def choices(self) -> List:
         _choices = copy(self._choices)
         for c in self._choices:
             for f in self.filters:
@@ -248,7 +250,7 @@ class ListValidator(Validator):
         _choices.sort(key=nonesorter)
         return _choices
 
-    def print_choices(self):
+    def print_choices(self) -> bool:
         if len(self.choices) > 0:
             print("Please select from the following choices:")
             for x, y in enumerate(self.choices):
@@ -257,7 +259,7 @@ class ListValidator(Validator):
         else:
             return False
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         """Return a boolean if the choice is a number in the enumeration"""
         if value in self.choices:
             self._choice = value
@@ -271,8 +273,10 @@ class ListValidator(Validator):
 
 
 class TupleValidator(Validator):
+    _choices: List
+    filters: List
 
-    def __init__(self, choices, filters=None):
+    def __init__(self, choices: Dict, filters: List = None):
         assert isinstance(choices, list)
         self._choices = choices
         if filters is None:
@@ -282,7 +286,7 @@ class TupleValidator(Validator):
         super(TupleValidator, self).__init__()
 
     @property
-    def choices(self):
+    def choices(self) -> List:
         _choices = copy(self._choices)
         for c in self._choices:
             for f in self.filters:
@@ -292,7 +296,7 @@ class TupleValidator(Validator):
         _choices.sort()
         return _choices
 
-    def print_choices(self):
+    def print_choices(self) -> bool:
         if len(self.choices) > 0:
             print("Please select from the following choices:")
             for x, y in enumerate(self.choices):
@@ -302,7 +306,7 @@ class TupleValidator(Validator):
         else:
             return False
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         """Return a boolean if the choice a number in the enumeration"""
         for x, y in self.choices:
             if x == value:
@@ -318,7 +322,8 @@ class TupleValidator(Validator):
 
 class HashValidator(Validator):
 
-    def __init__(self, choices, filters=None, verbose=True):
+    def __init__(self, choices: Dict, filters: List = None,
+                 verbose: bool = True) -> None:
         self._choices = OrderedDict()
         self.verbose = verbose
         for x in choices:
@@ -330,7 +335,7 @@ class HashValidator(Validator):
         super(HashValidator, self).__init__()
 
     @property
-    def choices(self):
+    def choices(self) -> Dict:
         _choices = copy(self._choices)
         for c in self._choices:
             for f in self.filters:
@@ -339,7 +344,7 @@ class HashValidator(Validator):
                     break
         return _choices
 
-    def print_choices(self):
+    def print_choices(self) -> bool:
         if len(self.choices) > 0:
             print("Please select from the following choices:")
             for x, y in enumerate(self.choices):
@@ -351,7 +356,7 @@ class HashValidator(Validator):
         else:
             return False
 
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         """Return a boolean if the choice is a number in the enumeration"""
         if value in list(self.choices.keys()):
             self._choice = value
@@ -366,7 +371,7 @@ class HashValidator(Validator):
 
 class IntegerValidator(Validator):
 
-    def validate(self, value):
+    def validate(self, value: int) -> bool:
         """
         Return True if the choice is an integer; False otherwise.
 

@@ -10,7 +10,7 @@ def bold(s: str) -> str:
     return '%s%s%s' % (BOLD, str(s), OFF)
 
 
-def nonesorter(elem):
+def nonesorter(elem) -> str:
     """Allow NoneType to be sortable.  Used as a key function."""
     if not elem:
         return ""
