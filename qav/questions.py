@@ -64,7 +64,6 @@ class QuestionSet(object):
 
 
 class Question(object):
-    answers: Dict
     _answers: Dict
     _questions: List
 
