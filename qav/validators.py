@@ -14,8 +14,9 @@ from copy import copy
 
 from collections import OrderedDict
 
-from netaddr import IPAddress
-from netaddr.core import AddrFormatError
+# There aren't type annotations for netaddr yet
+from netaddr import IPAddress  # type: ignore
+from netaddr.core import AddrFormatError  # type: ignore
 
 from .utils import nonesorter
 
