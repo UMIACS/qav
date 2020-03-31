@@ -3,7 +3,7 @@ stages:
   - build
   - deploy
 
-run_unit_tests__python36:
+run_unit_tests:
   stage: test
   image: python:3.6-slim
   script:
@@ -12,12 +12,21 @@ run_unit_tests__python36:
   tags:
     - docker
 
-flake8__python36:
+flake8:
   stage: test
   image: python:3.6-slim
   script:
     - pip install -q tox
-    - tox -e flake8-py36
+    - tox -e flake8
+  tags:
+    - docker
+
+mypy:
+  stage: test
+  image: python:3.6-slim
+  script:
+    - pip install -q tox
+    - tox -e mypy
   tags:
     - docker
 
